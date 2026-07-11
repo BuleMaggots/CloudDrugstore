@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.clouddrugstore.mapper.DrugUsageRelationMapper">
+    <delete id="deleteByDrugId">
+        DELETE FROM drug_usage_relation WHERE drug_id = #{id}
+    </delete>
+
+    <select id="listByDrugId" resultType="java.lang.Long">
+        SELECT usage_id FROM drug_usage_relation WHERE drug_id = #{drugId}
+    </select>
+    <select id="countDrugRelation" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM drug_usage_relation WHERE usage_id = #{id}
+    </select>
+</mapper>

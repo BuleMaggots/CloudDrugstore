@@ -1,0 +1,44 @@
+{
+  "groups": [
+    {
+      "name": "cloud.jwt",
+      "type": "com.example.clouddrugstore.properties.JwtProperties",
+      "sourceType": "com.example.clouddrugstore.properties.JwtProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "cloud.jwt.admin-secret-key",
+      "type": "java.lang.String",
+      "description": "管理端员工生成jwt令牌相关配置",
+      "sourceType": "com.example.clouddrugstore.properties.JwtProperties"
+    },
+    {
+      "name": "cloud.jwt.admin-token-name",
+      "type": "java.lang.String",
+      "sourceType": "com.example.clouddrugstore.properties.JwtProperties"
+    },
+    {
+      "name": "cloud.jwt.admin-ttl",
+      "type": "java.lang.Long",
+      "sourceType": "com.example.clouddrugstore.properties.JwtProperties"
+    },
+    {
+      "name": "cloud.jwt.user-secret-key",
+      "type": "java.lang.String",
+      "description": "用户端微信用户生成jwt令牌相关配置",
+      "sourceType": "com.example.clouddrugstore.properties.JwtProperties"
+    },
+    {
+      "name": "cloud.jwt.user-token-name",
+      "type": "java.lang.String",
+      "sourceType": "com.example.clouddrugstore.properties.JwtProperties"
+    },
+    {
+      "name": "cloud.jwt.user-ttl",
+      "type": "java.lang.Long",
+      "sourceType": "com.example.clouddrugstore.properties.JwtProperties"
+    }
+  ],
+  "hints": []
+}

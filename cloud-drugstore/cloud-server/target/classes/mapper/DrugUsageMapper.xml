@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.clouddrugstore.mapper.DrugUsageMapper">
+    <insert id="insert">
+        INSERT INTO drug_usage (name, parent_id, status, sort_order, create_time, update_time)
+        VALUES (#{name}, #{parentId}, #{status}, #{sortOrder}, #{createTime}, #{updateTime})
+    </insert>
+    <select id="countByNameAndParent" resultType="int">
+        SELECT COUNT(1) FROM drug_usage
+        WHERE name = #{name}
+        AND parent_id = #{parentId}
+        <if test="excludeId != null">
+            AND id != #{excludeId}
+        </if>
+    </select>
+    <delete id="deleteById">
+        DELETE FROM drug_usage WHERE id = #{id}
+    </delete>
+
+    <!-- 根据ID列表查询存在的数量 -->
+    <select id="selectCountByIds" resultType="int">
+        SELECT COUNT(1) FROM drug_usage
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        AND status = 1   <!-- 可选：只统计启用的用途，若无需则删除这行 -->
+    </select>
+
+    <select id="selectValidIds" resultType="long">
+        SELECT id FROM drug_usage
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        AND status = 1
+    </select>
+    <select id="listByIds" resultType="com.example.clouddrugstore.entity.DrugUsage">
+        SELECT id, name FROM drug_usage
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="getAllList" resultType="com.example.clouddrugstore.entity.DrugUsage">
+        SELECT * FROM drug_usage
+        <where>
+            <if test="status != null">
+                status = #{status}
+            </if>
+        </where>
+        ORDER BY sort_order ASC, id ASC
+    </select>
+    <select id="getList" resultType="com.example.clouddrugstore.entity.DrugUsage">
+        SELECT * FROM drug_usage
+        <where>
+            <if test="name != null and name != ''">
+                name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY sort_order ASC, id ASC
+    </select>
+    <select id="countChildren" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM drug_usage WHERE parent_id = #{id}
+    </select>
+    <select id="selectSubtreeIds" resultType="java.lang.Long">
+        WITH RECURSIVE usage_subtree AS (
+            SELECT id FROM drug_usage WHERE id = #{usageId}
+            UNION ALL
+            SELECT du.id FROM drug_usage du
+            INNER JOIN usage_subtree us ON du.parent_id = us.id
+        )
+        SELECT id FROM usage_subtree
+    </select>
+    <update id="update">
+        UPDATE drug_usage
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="sortOrder != null">
+                sort_order = #{sortOrder},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

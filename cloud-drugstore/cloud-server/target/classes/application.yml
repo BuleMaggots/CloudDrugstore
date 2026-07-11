@@ -1,0 +1,55 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false
+  datasource:
+    druid:
+      driver-class-name: ${cloud.datasource.driver-class-name}
+      url: jdbc:mysql://${cloud.datasource.host}:${cloud.datasource.port}/${cloud.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: ${cloud.datasource.username}
+      password: ${cloud.datasource.password}
+  redis:
+      host: ${cloud.redis.host}
+      port: ${cloud.redis.port}
+      password: ${cloud.redis.password}
+      database: ${cloud.redis.database}
+
+mybatis:
+  # mapper????
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.entity
+  configuration:
+    # ??????
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com:
+      example:
+        mapper: debug
+        service: info
+        controller: info
+
+cloud:
+  jwt:
+    admin-secret-key: BlueMaggot
+    admin-ttl: 7200000
+    admin-token-name: token
+order:
+  timeout:
+    # 超时时间（分钟），默认30分钟
+    minutes: 30
+    # 订单确认收货时间（天），默认7天
+    confirm-time: 7

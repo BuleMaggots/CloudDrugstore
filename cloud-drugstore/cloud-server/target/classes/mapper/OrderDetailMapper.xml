@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.clouddrugstore.mapper.OrderDetailMapper">
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO order_detail (order_id, drug_id, specification_id, drug_name, specification_name,price, quantity, subtotal, create_time)
+        VALUES
+        <foreach collection="details" item="item" separator=",">
+            (#{item.orderId}, #{item.drugId}, #{item.specificationId}, #{item.drugName}, #{item.specificationName},
+            #{item.price}, #{item.quantity}, #{item.subtotal}, #{item.createTime})
+        </foreach>
+    </insert>
+    <select id="selectByOrderId" resultType="com.example.clouddrugstore.vo.OrderItemVO">
+        SELECT drug_id, drug_name, specification_id, specification_name,
+               price, quantity, subtotal
+        FROM order_detail
+        WHERE order_id = #{orderId}
+    </select>
+    <select id="countByOrderId" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM order_detail WHERE order_id = #{orderId}
+    </select>
+</mapper>

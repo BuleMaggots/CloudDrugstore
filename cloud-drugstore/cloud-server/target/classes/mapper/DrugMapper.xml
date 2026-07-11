@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.clouddrugstore.mapper.DrugMapper">
+
+    <!-- 通用结果映射 -->
+    <resultMap id="BaseResultMap" type="com.example.clouddrugstore.entity.Drug">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="price" property="price"/>
+        <result column="image" property="image"/>
+        <result column="description" property="description"/>
+        <result column="approval_number" property="approvalNumber"/>
+        <result column="manufacturer" property="manufacturer"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_user" property="updateUser"/>
+    </resultMap>
+    <update id="update">
+        UPDATE drug
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="approvalNumber != null">approval_number = #{approvalNumber},</if>
+            <if test="manufacturer != null">manufacturer = #{manufacturer},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="batchDelete">
+        DELETE FROM drug
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 动态条件查询 -->
+    <select id="listByCondition" resultMap="BaseResultMap">
+        SELECT DISTINCT d.*
+        FROM drug d
+        <where>
+            <if test="name != null and name != ''">
+                AND d.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="categoryId != null">
+                AND d.category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                AND d.status = #{status}
+            </if>
+            <if test="usageIds != null and usageIds.size() > 0">
+                AND d.id IN (
+                SELECT drug_id FROM drug_usage_relation
+                WHERE usage_id IN
+                <foreach collection="usageIds" item="uid" open="(" separator="," close=")">
+                    #{uid}
+                </foreach>
+                )
+            </if>
+        </where>
+        <!-- 动态排序 -->
+        <choose>
+            <when test="orderBy != null and orderBy != ''">
+                ORDER BY ${orderBy}
+            </when>
+            <otherwise>
+                ORDER BY d.id DESC
+            </otherwise>
+        </choose>
+    </select>
+    <select id="selectByIds" resultType="com.example.clouddrugstore.entity.Drug">
+        SELECT * FROM drug
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        AND status = 1
+    </select>
+    <select id="countTotalDrug" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM drug WHERE status = 1
+    </select>
+</mapper>
