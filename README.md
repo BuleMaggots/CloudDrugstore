@@ -40,53 +40,9 @@ API 测试：Postman / APIfox
 
 📂 项目结构
 text
-agent/
-├── app/
-│   ├── main.py              # FastAPI入口，注册路由和生命周期管理
-│   ├── api/v1/              # API路由层
-│   │   ├── chat.py          # 智能对话接口
-│   │   └── health.py        # 健康检查接口
-│   ├── core/                # 核心基础设施
-│   │   ├── config.py        # 配置管理（环境变量）
-│   │   ├── database.py      # 数据库连接池
-│   │   └── redis.py         # Redis客户端
-│   ├── dependencies/        # 依赖注入
-│   │   ├── llm.py           # LLM客户端初始化
-│   │   └── session.py       # 会话管理
-│   ├── graph/               # LangGraph工作流
-│   │   ├── graph.py         # 图结构定义
-│   │   ├── nodes.py         # 图节点（对话逻辑）
-│   │   └── prompts.py       # 提示词模板
-│   ├── models/              # 数据模型（Pydantic）
-│   │   ├── drug.py          # 药品模型
-│   │   ├── request.py       # 请求模型
-│   │   ├── response.py      # 响应模型
-│   │   └── state.py         # 图状态模型
-│   └── services/            # 业务服务
-│       ├── drug_search.py   # 药品搜索服务
-│       └── session.py       # 会话服务
-cloud-drugstore/
-├── cloud-common/        # 公共模块（无业务逻辑）
-│   ├── constant/        # 常量定义（JwtClaimsConstant, PasswordConstant等）
-│   ├── context/         # 请求上下文（BaseContext）
-│   ├── enumeration/     # 枚举类型（DrugCategory, OrderStatusEnum等）
-│   ├── exception/       # 异常处理（BaseException, BusinessException等）
-│   ├── properties/      # 配置属性（JwtProperties）
-│   ├── result/          # 返回结果封装（Result, PageResult）
-│   └── utils/           # 工具类（JwtUtil）
-├── cloud-pojo/          # 数据对象模块
-│   ├── dto/             # 数据传输对象（请求/响应参数）
-│   ├── entity/          # 数据库实体（Drug, Order, Employee等）
-│   └── vo/              # 视图对象（API返回结构）
-└── cloud-server/        # 服务端模块（业务逻辑）
-    ├── annotation/      # 自定义注解（AutoFill）
-    ├── aspect/          # AOP切面（AutoFillAspect）
-    ├── config/          # 配置类（RedisConfiguration, WebMvcConfiguration）
-    ├── controller/      # 控制器层（admin/ 和 user/ 分组）
-    ├── interceptor/     # 拦截器（JwtTokenAdminInterceptor）
-    ├── mapper/          # 数据访问层（MyBatis接口）
-    ├── service/         # 业务逻辑层（接口 + impl实现）
-    └── task/            # 定时任务（OrderTimeoutCancelTask）
+<img width="676" height="751" alt="image" src="https://github.com/user-attachments/assets/62481a04-ba68-4890-93a4-b209db4796a4" />
+<img width="842" height="659" alt="image" src="https://github.com/user-attachments/assets/9670048e-574d-4e09-8868-1ff4cf2f431b" />
+
 🗄️ 数据库设计
 核心表结构（共 11 张表）
 表名	说明
